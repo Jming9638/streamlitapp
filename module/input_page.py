@@ -23,20 +23,25 @@ def input_method():
         ph4 = st.empty()
         item = ph4.text_input('Item/Activity')
     
-    input_btn = st.button("Add")
-    if input_btn:
-        st.session_state['elem'].append([paid, float(amount), for_, item])
+    btn_col = st.columns([0.6,1,1,1,1])
+    with btn_col[0]:
+        input_btn = st.button("Add")
+        if input_btn:
+            st.session_state['elem'].append([paid, float(amount), for_, item])
         
     input_list = st.session_state['elem']
-    df_input = pd.DataFrame(input_list, columns=['paid', 'amount', 'for', 'item'])
     
-    if df_input.shape[0] >= 1:
+    if len(input_list) >= 1:
+        with btn_col[1]:
+            delete_btn = st.button("Delete")
+            if delete_btn:
+                del st.session_state['elem'][-1]
+        
         st.write('')
         st.write('Edit your value if input wrongly.')
         col2 = st.columns([1,1,1])
         with col2[0]:
-            ph11 = st.empty()
-            rn = ph11.text_input('Which row? (Only integer is allowed.)')
+            rn = st.selectbox('Which column?', range(len(input_list)))
             if rn is not None and rn != '':
                 try:
                     rn = int(rn)
@@ -44,20 +49,28 @@ def input_method():
                     rn = 0
             
         with col2[1]:
-            ph22 = st.empty()
-            cn = ph22.text_input('Which column?')
+            cn = st.selectbox('Which column?', ('-Select column-', 'paid', 'amount', 'for', 'item'))
+            if cn == 'paid':
+                cname = 0
+            elif cn == 'amount':
+                cname = 1
+            elif cn == 'for':
+                cname = 2
+            elif cn == 'item':
+                cname = 3
             
         with col2[2]:
             ph33 = st.empty()
             val = ph33.text_input('Replace with?')
         
         modify_btn = st.button("Update value")
-        if modify_btn:
+        if modify_btn and cn != '-Select column-':
             try:
-                df_input.loc[rn, cn] = float(val)
+                st.session_state['elem'][rn][cname] = float(val)
             except:
-                df_input.loc[rn, cn] = val
+                st.session_state['elem'][rn][cname] = val
         
+        df_input = pd.DataFrame(input_list, columns=['paid', 'amount', 'for', 'item'])
         st.header("Raw Data:")
         st.write(df_input)
         
