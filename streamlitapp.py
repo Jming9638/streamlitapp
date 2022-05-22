@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 
 from module.df2result import transformResult
-
+from module.df2excel import to_excel
 #--------------------------Set up Memory--------------------------#
 if 'elem' not in st.session_state:
     st.session_state['elem'] = []
@@ -86,6 +86,11 @@ def run():
             st.header("Raw Data:")
             st.write(df_input)
             
+            df_xlsx = to_excel(df_input)
+            st.download_button(label='Download as Excel Workbook', 
+                               data=df_xlsx, 
+                               file_name= 'raw_data.xlsx')
+            
             result2 = transformResult(df_input)
             st.header("Result:")
             st.write(result2.style.format("{:.2f}"))
@@ -99,3 +104,4 @@ def run():
 
 if __name__ == "__main__":
     run()
+    
