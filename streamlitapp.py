@@ -10,6 +10,8 @@ if 'elem' not in st.session_state:
 
 
 def run():
+    st.title("Shared Expenses Calculator")
+    
     option = st.selectbox(
         'Upload file or input manually?',
         ('-Select option-', 'Upload', 'Input'))
