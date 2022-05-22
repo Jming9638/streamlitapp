@@ -35,6 +35,3 @@ def transformResult(df):
     result = pd.DataFrame(full_list, columns=df_pivot.columns, index=df_pivot.index)
     
     return result
-
-df = pd.read_excel('sharedExpenses.xlsx')
-print(transformResult(df))
