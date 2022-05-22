@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
+from module.df2result import transformResult
+
 #--------------------------Set up Memory--------------------------#
 if 'elem' not in st.session_state:
     st.session_state['elem'] = []
@@ -9,16 +11,6 @@ if 'elem' not in st.session_state:
 if 'input_row' not in st.session_state:
     st.session_state['input_row'] = 1
 
-#--------------------------Function--------------------------#
-def split_comma(txt):
-    l = txt.replace(' ', '').split(',')
-    return l
-
-def count_ppl(ppl):
-    c = len(ppl)
-    return c
-
-#--------------------------Function--------------------------#
 def run():
     option = st.selectbox(
         'Upload file or input manually?',
@@ -36,36 +28,7 @@ def run():
             st.header("Raw Data:")
             st.write(df)
             
-            df['for'] = df['for'].apply(split_comma)
-            df['ppl'] = df['for'].apply(count_ppl)
-            df['divided_amount'] = df['amount']/df['ppl']
-            df_ex = df.explode('for', ignore_index=True)
-
-            corrected_list = []
-            for i in range(df_ex.shape[0]):
-                if df_ex['paid'][i] == df_ex['for'][i]:
-                    corrected_list.append(0)
-                else:
-                    corrected_list.append(df_ex['divided_amount'][i])
-
-            df_ex['divided_amount'] = corrected_list
-            df_pivot = pd.pivot_table(df_ex, index='paid', columns='for', values='divided_amount', aggfunc='sum', fill_value=0)
-            
-            full_list = []
-            for i in df_pivot.index:
-                row_result = []
-                for j in df_pivot.columns:
-                    if i==j:
-                        row_result.append(0)
-                    else:
-                        try:
-                            num = df_pivot.loc[i,j] - df_pivot.loc[j,i]
-                            row_result.append(num)
-                        except:
-                            row_result.append(df_pivot.loc[i,j])
-                full_list.append(row_result)
-
-            result = pd.DataFrame(full_list, columns=df_pivot.columns, index=df_pivot.index)
+            result = transformResult(df)
             st.header("Result:")
             st.write(result.style.format("{:.2f}"))
 
@@ -101,38 +64,9 @@ def run():
             st.header("Raw Data:")
             st.write(df_input)
             
-            df_input['for'] = df_input['for'].apply(split_comma)
-            df_input['ppl'] = df_input['for'].apply(count_ppl)
-            df_input['divided_amount'] = df_input['amount']/df_input['ppl']
-            df_ex = df_input.explode('for', ignore_index=True)
-
-            corrected_list = []
-            for i in range(df_ex.shape[0]):
-                if df_ex['paid'][i] == df_ex['for'][i]:
-                    corrected_list.append(0)
-                else:
-                    corrected_list.append(df_ex['divided_amount'][i])
-
-            df_ex['divided_amount'] = corrected_list
-            df_pivot = pd.pivot_table(df_ex, index='paid', columns='for', values='divided_amount', aggfunc='sum', fill_value=0)
-            
-            full_list = []
-            for i in df_pivot.index:
-                row_result = []
-                for j in df_pivot.columns:
-                    if i==j:
-                        row_result.append(0)
-                    else:
-                        try:
-                            num = df_pivot.loc[i,j] - df_pivot.loc[j,i]
-                            row_result.append(num)
-                        except:
-                            row_result.append(df_pivot.loc[i,j])
-                full_list.append(row_result)
-
-            result = pd.DataFrame(full_list, columns=df_pivot.columns, index=df_pivot.index)
+            result2 = result = transformResult(df_input)
             st.header("Result:")
-            st.write(result.style.format("{:.2f}"))
+            st.write(result2.style.format("{:.2f}"))
         
         else:
             st.write("Input the parameter to see the result")
@@ -143,4 +77,3 @@ def run():
 
 if __name__ == "__main__":
     run()
-    
