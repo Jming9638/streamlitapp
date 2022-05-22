@@ -30,31 +30,34 @@ def input_method():
     input_list = st.session_state['elem']
     df_input = pd.DataFrame(input_list, columns=['paid', 'amount', 'for', 'item'])
     
-    st.write('')
-    st.write('Edit your value if input wrongly.')
-    col2 = st.columns([1,1,1])
-    with col2[0]:
-        ph11 = st.empty()
-        rn = ph11.text_input('Which row?')
-        if rn is not None and rn != '':
-            rn = int(rn)
-        
-    with col2[1]:
-        ph22 = st.empty()
-        cn = ph22.text_input('Which column?')
-        
-    with col2[2]:
-        ph33 = st.empty()
-        val = ph33.text_input('Replace with?')
-    
-    modify_btn = st.button("Update value")
-    if modify_btn:
-        try:
-            df_input.loc[rn, cn] = float(val)
-        except:
-            df_input.loc[rn, cn] = val
-    
     if df_input.shape[0] >= 1:
+        st.write('')
+        st.write('Edit your value if input wrongly.')
+        col2 = st.columns([1,1,1])
+        with col2[0]:
+            ph11 = st.empty()
+            rn = ph11.text_input('Which row? (Only integer is allowed.)')
+            if rn is not None and rn != '':
+                try:
+                    rn = int(rn)
+                except:
+                    rn = 0
+            
+        with col2[1]:
+            ph22 = st.empty()
+            cn = ph22.text_input('Which column?')
+            
+        with col2[2]:
+            ph33 = st.empty()
+            val = ph33.text_input('Replace with?')
+        
+        modify_btn = st.button("Update value")
+        if modify_btn:
+            try:
+                df_input.loc[rn, cn] = float(val)
+            except:
+                df_input.loc[rn, cn] = val
+        
         st.header("Raw Data:")
         st.write(df_input)
         
