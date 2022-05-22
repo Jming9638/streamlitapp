@@ -7,9 +7,7 @@ from module.df2result import transformResult
 #--------------------------Set up Memory--------------------------#
 if 'elem' not in st.session_state:
     st.session_state['elem'] = []
-    
-if 'input_row' not in st.session_state:
-    st.session_state['input_row'] = 1
+
 
 def run():
     option = st.selectbox(
@@ -32,9 +30,7 @@ def run():
             st.header("Result:")
             st.write(result.style.format("{:.2f}"))
 
-    elif option == 'Input':
-        number_of_row = st.session_state['input_row']
-        
+    elif option == 'Input': 
         col = st.columns([1, 1, 1, 1])
         
         with col[0]:
@@ -59,6 +55,29 @@ def run():
             
         input_list = st.session_state['elem']
         df_input = pd.DataFrame(input_list, columns=['paid', 'amount', 'for', 'item'])
+        
+        st.write('')
+        st.write('Edit your value if input wrongly.')
+        col2 = st.columns([1,1,1])
+        with col2[0]:
+            ph11 = st.empty()
+            rn = ph11.text_input('Which row?')
+            rn = int(0)
+            
+        with col2[1]:
+            ph22 = st.empty()
+            cn = ph22.text_input('Which column?')
+            
+        with col2[2]:
+            ph33 = st.empty()
+            val = ph33.text_input('Replace with?')
+        
+        modify_btn = st.button("Update value")
+        if modify_btn:
+            try:
+                df_input.loc[rn, cn] = float(val)
+            except:
+                df_input.loc[rn, cn] = val
         
         if df_input.shape[0] >= 1:
             st.header("Raw Data:")
