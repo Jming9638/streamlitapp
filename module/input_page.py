@@ -23,20 +23,26 @@ def input_method():
         ph4 = st.empty()
         item = ph4.text_input('Item/Activity')
     
-    btn_col = st.columns([0.6,1,1,1,1])
+    btn_col = st.columns([0.6,0.6,2,1,1])
     with btn_col[0]:
         input_btn = st.button("Add")
         if input_btn:
             st.session_state['elem'].append([paid, float(amount), for_, item])
+            
+    with btn_col[1]:
+        delete_btn = st.button("Delete")
+        if delete_btn:
+            try:
+                del st.session_state['elem'][-1]
+            except:
+                with btn_col[2]:
+                    st.write("")
+                    st.write("No more rows.")
         
     input_list = st.session_state['elem']
     
     if len(input_list) >= 1:
-        with btn_col[1]:
-            delete_btn = st.button("Delete")
-            if delete_btn:
-                del st.session_state['elem'][-1]
-        
+    
         st.write('')
         st.write('Edit your value if input wrongly.')
         col2 = st.columns([1,1,1])
