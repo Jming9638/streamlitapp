@@ -4,6 +4,7 @@ import numpy as np
 
 from module.df2result import transformResult
 from module.input_page import input_method
+from module.dis_play import summary_res
 #--------------------------Set up Memory--------------------------#
 if 'elem' not in st.session_state:
     st.session_state['elem'] = []
@@ -31,6 +32,8 @@ def run():
             result = transformResult(df)
             st.header("Result:")
             st.write(result.style.format("{:.2f}"))
+            
+            summary_res(result)
 
     elif option == 'Input': 
         input_method()
