@@ -83,7 +83,7 @@ def run():
             st.header("Raw Data:")
             st.write(df_input)
             
-            result2 = result = transformResult(df_input)
+            result2 = transformResult(df_input)
             st.header("Result:")
             st.write(result2.style.format("{:.2f}"))
         
