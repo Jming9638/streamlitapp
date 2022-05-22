@@ -2,6 +2,7 @@ import streamlit as st
 
 def summary_res(result):
     st.header("Summary:")
+    
     col = st.columns([1,2,1,1,1])
     for i in result.columns:
         for j in result.index:
