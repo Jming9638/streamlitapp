@@ -90,7 +90,9 @@ def input_method():
         st.write(result2.style.format("{:.2f}"))
         
         summary_res(result2)
-        st.write("End of the page.")
+        end_col = st.columns([1,1,1])
+        with end_col[1]:
+            st.write("------End of the page------")
     
     else:
         st.write("Input the parameter to see the result")
