@@ -34,6 +34,9 @@ def run():
             st.write(result.style.format("{:.2f}"))
             
             summary_res(result)
+            end_col = st.columns([1,1,1])
+            with end_col[1]:
+                st.write("------End of the page------")
 
     elif option == 'Input': 
         input_method()
