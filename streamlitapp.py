@@ -62,7 +62,8 @@ def run():
         with col2[0]:
             ph11 = st.empty()
             rn = ph11.text_input('Which row?')
-            rn = int(rn)
+            if rn is not None and rn != '':
+                rn = int(rn)
             
         with col2[1]:
             ph22 = st.empty()
