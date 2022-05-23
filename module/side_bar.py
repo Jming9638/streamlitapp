@@ -1,13 +1,13 @@
 import streamlit as st
 
-if 'row_count' not in st.session_state:
-    st.session_state['row_count'] = 1
-if 'name_list' not in st.session_state:
-    st.session_state['name_list'] = []
-
 
 uni_name = []
 def sidebar():
+    if 'row_count' not in st.session_state:
+        st.session_state['row_count'] = 1
+    if 'name_list' not in st.session_state:
+        st.session_state['name_list'] = []
+        
     with st.sidebar:
         st.title("Manage member")
         row_btn = st.button("Add Member")
