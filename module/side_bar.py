@@ -1,8 +1,8 @@
 import streamlit as st
 
-uni_name = []
 def sidebar():
     with st.sidebar:
+        uni_name = []
         if 'count' not in st.session_state:
             st.session_state['count'] = 1
         if 'name_list' not in st.session_state:
@@ -32,8 +32,8 @@ def sidebar():
             with side_col[1]:
                 del_btn = st.button("Delete Member")
                 if del_btn:
-                    del st.session_state['name_list'][-1]
+                    # del st.session_state['name_list'][-1]
                     st.session_state['count'] -= 1
                     st.experimental_rerun()
-         
+                    
     return name_list
