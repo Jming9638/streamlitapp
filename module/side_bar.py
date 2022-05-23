@@ -1,20 +1,21 @@
 import streamlit as st
 
-
 uni_name = []
 def sidebar():
-    if 'row_count' not in st.session_state:
-        st.session_state['row_count'] = 1
-    if 'name_list' not in st.session_state:
-        st.session_state['name_list'] = []
-        
     with st.sidebar:
-        st.title("Manage member")
+        if 'count' not in st.session_state:
+            st.session_state['count'] = 1
+        if 'name_list' not in st.session_state:
+            st.session_state['name_list'] = []
+        else:
+            st.session_state['name_list'] = []
+        
+        st.title("Manage Member")
         row_btn = st.button("Add Member")
         if row_btn:
-            st.session_state['row_count'] += 1
+            st.session_state['count'] += 1
             
-        for i in range(st.session_state['row_count']):
+        for i in range(st.session_state['count']):
             st.session_state['name_list'].append(st.text_input("Name", key=i))
             
         for name in st.session_state['name_list']:
@@ -22,5 +23,12 @@ def sidebar():
                 uni_name.append(name)
         st.session_state['name_list'] = uni_name
         name_list = st.session_state['name_list']
-             
+        
+        if len(st.session_state['name_list'])>=1:
+            del_btn = st.button("Delete Member")
+            if del_btn:
+                del st.session_state['name_list'][-1]
+                st.session_state['count'] -= 1
+                st.experimental_rerun()
+         
     return name_list
