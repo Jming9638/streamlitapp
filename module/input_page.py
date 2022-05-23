@@ -3,21 +3,30 @@ import pandas as pd
 
 from .df2result import transformResult, to_excel
 from .dis_play import summary_res
+from .side_bar import sidebar
 
+name_list = ['-Select name-']
 def input_method():
+    nname = sidebar()
+    for name in nname:
+        if name not in name_list and name != "":
+            name_list.append(name)
     col = st.columns([1, 1, 2, 1])
         
     with col[0]:
-        ph1 = st.empty()
-        paid = ph1.text_input('Who paid?')
+        # ph1 = st.empty()
+        # paid = ph1.text_input('Who paid?')
+        paid = st.selectbox('Who paid?', name_list)
         
     with col[1]:
         ph2 = st.empty()
         amount = ph2.text_input('Amount')
         
     with col[2]:
-        ph3 = st.empty()
-        for_ = ph3.text_input('Paid for who?')
+        # ph3 = st.empty()
+        # for_ = ph3.text_input('Paid for who?')
+        ffor = st.multiselect('Paid for who?', [x for x in name_list if len(name_list)>=1 and x!="-Select name-"])
+        for_ = ', '.join([str(elem) for elem in ffor])
         
     with col[3]:
         ph4 = st.empty()
@@ -26,7 +35,7 @@ def input_method():
     btn_col = st.columns([0.6,0.6,2,1,1])
     with btn_col[0]:
         input_btn = st.button("Add")
-        if input_btn:
+        if input_btn and paid != '-Select name-' and amount != '' and for_ != '':
             st.session_state['elem'].append([paid, float(amount), for_, item])
             
     with btn_col[1]:
