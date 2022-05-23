@@ -10,7 +10,7 @@ def summary_res(result):
                 with col[0]:
                     st.write(i)
                 with col[1]:
-                    st.write("have to pay")
+                    st.write("has to pay")
                 with col[2]:
                     st.write("RM {:.2f}".format(amount))
                 with col[3]:
