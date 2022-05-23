@@ -11,6 +11,7 @@ if 'elem' not in st.session_state:
 
 
 def run():
+    st.set_page_config(page_title="Shared Expense Calculator")
     st.title("Shared Expenses Calculator")
     
     option = st.selectbox(
