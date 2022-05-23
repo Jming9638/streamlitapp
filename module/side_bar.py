@@ -3,7 +3,7 @@ import random
 import string
 
 if 'row_count' not in st.session_state:
-    st.session_state['row_count'] = 0
+    st.session_state['row_count'] = 1
 if 'name_list' not in st.session_state:
     st.session_state['name_list'] = []
 
