@@ -5,9 +5,9 @@ from .df2result import transformResult, to_excel
 from .dis_play import summary_res
 from .side_bar import sidebar
 
-name_list = ['-Select name-']
 def input_method():
     nname = sidebar()
+    name_list = ['-Select name-']
     for name in nname:
         if name not in name_list and name != "":
             name_list.append(name)
