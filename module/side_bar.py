@@ -11,9 +11,6 @@ def sidebar():
             st.session_state['name_list'] = []
         
         st.title("Manage Member")
-        row_btn = st.button("Add Member")
-        if row_btn:
-            st.session_state['count'] += 1
             
         for i in range(st.session_state['count']):
             st.session_state['name_list'].append(st.text_input("Name", key=i))
@@ -24,11 +21,19 @@ def sidebar():
         st.session_state['name_list'] = uni_name
         name_list = st.session_state['name_list']
         
-        if len(st.session_state['name_list'])>=1:
-            del_btn = st.button("Delete Member")
-            if del_btn:
-                del st.session_state['name_list'][-1]
-                st.session_state['count'] -= 1
+        side_col = st.columns([1,1])
+        with side_col[0]:
+            row_btn = st.button("Add Member")
+            if row_btn:
+                st.session_state['count'] += 1
                 st.experimental_rerun()
+        
+        if len(st.session_state['name_list'])>=1:
+            with side_col[1]:
+                del_btn = st.button("Delete Member")
+                if del_btn:
+                    del st.session_state['name_list'][-1]
+                    st.session_state['count'] -= 1
+                    st.experimental_rerun()
          
     return name_list
